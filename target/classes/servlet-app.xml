@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-lazy-init="true"
+	xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="  
+           http://www.springframework.org/schema/beans   
+           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd    
+           http://www.springframework.org/schema/mvc   
+           http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd     
+           http://www.springframework.org/schema/context   
+           http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<!-- 自动搜索@Controller标注的类 -->
+	<context:component-scan base-package="com.shuogesha.api" />
+ 	
+ 	<!-- 拦截器 -->
+	 <mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+				<ref bean="apiInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+				<ref bean="userAccessInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors> 
+	
+	<bean id="apiInterceptor" class="com.shuogesha.api.filter.ApiInterceptor" >
+		<property name="debug" value="true"/>
+	</bean>
+	<bean id="userAccessInterceptor" class="com.shuogesha.api.filter.UserAccessApiInterceptor" >
+	</bean>
+	
+	
+	<bean
+		class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<ref bean="stringConverter" />
+				<ref bean="jsonConverter" />    <!-- 注册JSON Converter -->
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- 对静态资源文件的访问 不支持访问WEB-INF目录 -->
+	<mvc:default-servlet-handler />
+
+	<bean id="stringConverter"
+		class="org.springframework.http.converter.StringHttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>text/plain;charset=UTF-8</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 输出对象转JSON支持 -->
+	<bean id="jsonConverter"
+		class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+	    <property name="supportedMediaTypes"> 
+	        <list> 
+	            <value>text/html;charset=UTF-8</value> 
+	        </list> 
+	    </property>
+	</bean>
+</beans>

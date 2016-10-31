@@ -1,0 +1,81 @@
+package #{action_p};
+
+import static com.shuogesha.cms.web.mongo.SimplePage.cpn;
+
+import java.io.UnsupportedEncodingException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.shuogesha.cms.entity.Site;
+import #{entity_p}.#{Entity};
+import #{service_p}.#{Entity}Service;
+import com.shuogesha.cms.web.CmsUtils;
+import com.shuogesha.cms.web.CookieUtils;
+import com.shuogesha.cms.web.RequestUtils;
+import com.shuogesha.cms.web.mongo.Pagination;
+
+@Controller
+@RequestMapping("/#{config_entity}/")
+public class #{Entity}Act {
+
+	@RequestMapping(value = "/v_list.do")
+	public String v_list(Integer pageNo, HttpServletRequest request,
+			HttpServletResponse response, ModelMap model)
+			throws UnsupportedEncodingException {
+		Pagination pagination = #{config_entity}Service.getPage(cpn(pageNo),
+				CookieUtils.getPageSize(request));
+		model.addAttribute("pagination", pagination);
+		return "#{config_entity}/v_list";
+	}
+
+	@RequestMapping(value = "/v_add.do")
+	public String v_add(HttpServletRequest request,
+			HttpServletResponse response, ModelMap model)
+			throws UnsupportedEncodingException {
+
+		return "#{config_entity}/v_add";
+	}
+
+	@RequestMapping(value = "/o_save.do", method = RequestMethod.POST)
+	public String o_save(#{Entity} bean,
+			HttpServletRequest request, HttpServletResponse response,
+			ModelMap model) throws UnsupportedEncodingException {
+		Site site = CmsUtils.getSite(request);
+		#{config_entity}Service.save(bean);
+		return "redirect:v_list.do";
+	}
+
+	@RequestMapping(value = "/v_edit.do")
+	public String v_edit(String id, HttpServletRequest request,
+			HttpServletResponse response, ModelMap model)
+			throws UnsupportedEncodingException {
+		model.put("bean", #{config_entity}Service.findById(id));
+		return "#{config_entity}/v_edit";
+	}
+
+	@RequestMapping(value = "/o_update.do", method = RequestMethod.POST)
+	public String o_update(#{Entity} bean, HttpServletRequest request,
+			HttpServletResponse response, ModelMap model)
+			throws UnsupportedEncodingException {
+		#{config_entity}Service.update(bean);
+		return "redirect:v_list.do";
+	}
+
+	@RequestMapping(value = "/o_delete.do")
+	public String o_delete(String[] ids, HttpServletRequest request,
+			HttpServletResponse response, ModelMap model)
+			throws UnsupportedEncodingException {
+		#{config_entity}Service.removeByIds(ids);
+		return "redirect:v_list.do";
+	}
+	
+	@Autowired
+	public #{Entity}Service #{config_entity}Service;
+}

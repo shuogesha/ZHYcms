@@ -1,0 +1,18 @@
+package #{dao_p};
+
+import org.springframework.data.mongodb.core.query.Update;
+import com.shuogesha.cms.web.mongo.Pagination;
+
+import #{entity_p}.#{Entity};
+
+public interface #{Entity}Dao {
+	void saveEntity(#{Entity} bean);
+
+	#{Entity} findById(String id);
+
+	void update(Update update, String id);
+	
+	Pagination getPage(int pageNo, int pageSize);
+
+	void removeById(String id);
+}

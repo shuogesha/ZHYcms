@@ -1,0 +1,18 @@
+package #{service_p};
+
+import com.shuogesha.cms.web.mongo.Pagination;
+import #{entity_p}.#{Entity};
+
+public interface #{Entity}Service {
+	Pagination getPage(int pageNo, int pageSize);
+
+	#{Entity} findById(String id);
+
+	void save(#{Entity} bean);
+
+	void update(#{Entity} bean);
+
+	void removeById(String id);
+	
+	void removeByIds(String[] ids);
+}

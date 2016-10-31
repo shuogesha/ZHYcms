@@ -1,0 +1,54 @@
+package #{service_impl_p};
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Service;
+
+import #{dao_p}.#{Entity}Dao;
+import #{entity_p}.#{Entity};
+import #{service_p}.#{Entity}Service;
+import com.shuogesha.cms.web.mongo.Pagination;
+
+
+@Service
+public class #{Entity}ServiceImpl implements #{Entity}Service{
+	
+	@Autowired
+	private #{Entity}Dao dao;
+
+	@Override
+	public #{Entity} findById(String id) {
+		return dao.findById(id);
+	}
+	
+	@Override
+	public Pagination getPage(int pageNo, int pageSize) {
+		return dao.getPage(pageNo,pageSize);
+	}
+
+	@Override
+	public void save(#{Entity} bean) {
+		 dao.saveEntity(bean);
+	}
+
+	@Override
+	public void update(#{Entity} bean) {
+		 Update update = new Update();
+		 update.set("name", bean.getName());
+		 dao.update(update, bean.getId());
+	}
+
+	@Override
+	public void removeById(String id) {
+		dao.removeById(id);
+	}
+
+	@Override
+	public void removeByIds(String[] ids) {
+		for (int i = 0, len = ids.length; i < len; i++) {
+			removeById(ids[i]);
+		}
+	}
+
+}

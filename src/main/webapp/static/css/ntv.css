@@ -1,0 +1,39 @@
+ /*-- NTV
+====================================================== --*/
+
+
+/**
+ * 关于NGB-H, SHDV, iPanel中间件CSS问题汇总
+ * 1. iPanel中间件不支持属性
+ *    min-width(min-height)  使用后回出现元素不显示,例如设置了背景图就不会显示.
+ *    clear: both;           使用与webkit不一样, clear会从当前元素之后. webkit会从当前元素开始.
+ *    display: inline;       使用后元素的margin不起效.
+ *
+ * 2. SHDV中间件注意部分
+ *    <ul> 标签要手动清除margin, padding默认间距
+ */
+
+/*--Reset
+====================================================== */
+body{margin:0px; padding: 0px; font-family: "微软雅黑"; font-size: 20px;}
+ul{list-style: none; margin:0px; padding: 0px;}
+li{margin:0px; padding: 0px;}
+input,button,select,textarea{ outline:none;}
+textarea{ font-size:13px; resize:none;}
+a{text-decoration: none;}
+p{margin:0px; padding: 0px;}
+
+/*--Common
+====================================================== */
+.container{width:1280px; height: 720px; overflow: hidden; background-color: #e6e6e6;}
+.console{ width:1200px; position: absolute; top: 40px; left: 40px; height: 20px; color: #fff; z-index:9;}
+.console p{background-color: #336699; opacity: 0.7;}
+.pos-abs{display:block; position: absolute;}
+.pos-rel{display:block; position: relative;}
+.float-clear{clear: both;}
+
+/*--Ntv
+====================================================== */
+.ntv{font-family: "微软雅黑";font-size: 22px;color: #ffffff; font-weight: bold;overflow: hidden;background-color: rgba(17,17,17,0.9);border: solid 2px #FFC106;}
+.ntv ul{margin: 100px 150px 0px 150px;}
+.ntv li{margin: 0px 50px 30px 0px; display: inline;}
